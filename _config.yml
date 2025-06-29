@@ -1,11 +1,12 @@
 # Site settings
-title: Hux Blog
+title: Zrry's Blog
 SEOTitle: Zciszrry的博客 | Zrry's Blog
 header-img: img/home-bg.jpg
 email: 18086215842@163.com
-description: "这里是 Zciszrry 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员"
-keyword: "黄玄, Hux黄玄, Hux, 鬼栈, huxpro, @huxpro, 黄玄的博客, Hux Blog, 博客, 个人网站, 互联网, Web, JavaScript, React, React Native, 前端, 设计"
-url: "https://huangxuan.me" # your host, for absolute URL
+description: "这里是 Zciszrry 的个人博客，与你一起发现更大的世界 | 永远喜欢千反田"
+# keyword: "黄玄, Hux黄玄, Hux, 鬼栈, huxpro, @huxpro, 黄玄的博客, Hux Blog, 博客, 个人网站, 互联网, Web, JavaScript, React, React Native, 前端, 设计"
+keyword: "zciszrry,zrry,zrry's blog"
+url: "https://zciszrry.github.io" # your host, for absolute URL
 baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
 
 # Publish posts or collection documents with a future date.
@@ -13,11 +14,11 @@ future: true
 
 # SNS settings
 RSS: false
-weibo_username: huxpro
-zhihu_username: huxpro
-github_username: huxpro
-twitter_username: huxpro
-#facebook_username:  huxpro
+weibo_username: zciszrry
+zhihu_username: zciszrry
+github_username: zciszrry
+twitter_username: zciszrry
+#facebook_username:  zciszrry
 #linkedin_username:  firstname-lastname-idxxxx
 
 # Build settings
@@ -59,7 +60,7 @@ kramdown:
       start_line: 1
 
 # Disqus settings
-disqus_username: hux
+disqus_username: zciszrry
 
 # Netease settings
 netease_comment: false
@@ -74,8 +75,8 @@ ga_domain: huangxuan.me
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
-sidebar-about-description: "要做一个有 swag 的程序员 <br> React Team @ Meta"
-sidebar-avatar: https://github.com/Huxpro.png # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-about-description: "艾雅法拉~"
+sidebar-avatar: https://github.com/zciszrry.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
 featured-tags: true # whether or not using Feature-Tags
