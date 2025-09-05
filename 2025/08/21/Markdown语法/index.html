@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="斜体​	效果：这是斜体 12_这是斜体_*这是斜体*  粗体​	效果：粗体 12__粗体__**粗体**  斜粗体​	斜粗体 12___粗体___***粗体***  引用 引用的效果就是这样 &lt;–左边出现这个东西  引用的引用  还能引    123&gt;引用的效果就是这样&gt;左边出现这个东西&gt;&gt;引用的引用  ​	引用用途举例：  用户反馈    希望增加夜间模式功能，当前">
+  <meta name="description" content="斜体​    效果：这是斜体 12_这是斜体_*这是斜体* 粗体​    效果：粗体 12__粗体__**粗体**">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Markdown语法">
 <meta property="og:url" content="http://example.com/2025/08/21/Markdown%E8%AF%AD%E6%B3%95/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="斜体​	效果：这是斜体 12_这是斜体_*这是斜体*  粗体​	效果：粗体 12__粗体__**粗体**  斜粗体​	斜粗体 12___粗体___***粗体***  引用 引用的效果就是这样 &lt;–左边出现这个东西  引用的引用  还能引    123&gt;引用的效果就是这样&gt;左边出现这个东西&gt;&gt;引用的引用  ​	引用用途举例：  用户反馈    希望增加夜间模式功能，当前">
+<meta property="og:description" content="斜体​    效果：这是斜体 12_这是斜体_*这是斜体* 粗体​    效果：粗体 12__粗体__**粗体**">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-08-21T03:44:40.000Z">
-<meta property="article:modified_time" content="2025-08-21T03:45:31.464Z">
+<meta property="article:modified_time" content="2025-09-05T08:56:13.749Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Markdown">
 <meta name="twitter:card" content="summary">
@@ -77,7 +77,119 @@
   </style>
 </noscript>
 
-</head>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -173,10 +285,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2025-08-21 11:44:40 / Modified: 11:45:31" itemprop="dateCreated datePublished" datetime="2025-08-21T11:44:40+08:00">2025-08-21</time>
+              <time title="Created: 2025-08-21 11:44:40" itemprop="dateCreated datePublished" datetime="2025-08-21T11:44:40+08:00">2025-08-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-09-05 16:56:13" itemprop="dateModified" datetime="2025-09-05T16:56:13+08:00">2025-09-05</time>
+              </span>
 
           
 
@@ -189,18 +307,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="斜体"><a href="#斜体" class="headerlink" title="斜体"></a>斜体</h3><p>​	效果：<em>这是斜体</em></p>
+        <h3 id="斜体"><a href="#斜体" class="headerlink" title="斜体"></a>斜体</h3><p>​    效果：<em>这是斜体</em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_这是斜体_</span><br><span class="line">*这是斜体*</span><br></pre></td></tr></table></figure>
-
-<h3 id="粗体"><a href="#粗体" class="headerlink" title="粗体"></a>粗体</h3><p>​	效果：<strong>粗体</strong></p>
+<h3 id="粗体"><a href="#粗体" class="headerlink" title="粗体"></a>粗体</h3><p>​    效果：<strong>粗体</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__粗体__</span><br><span class="line">**粗体**</span><br></pre></td></tr></table></figure>
-
-<h3 id="斜粗体"><a href="#斜粗体" class="headerlink" title="斜粗体"></a>斜粗体</h3><p>​	<em><strong>斜粗体</strong></em></p>
+<span id="more"></span>
+<h3 id="斜粗体"><a href="#斜粗体" class="headerlink" title="斜粗体"></a>斜粗体</h3><p>​    <strong><em>斜粗体</em></strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">___粗体___</span><br><span class="line">***粗体***</span><br></pre></td></tr></table></figure>
-
 <h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><blockquote>
 <p>引用的效果就是这样</p>
-<p>&lt;–左边出现这个东西</p>
+<p>&lt;—左边出现这个东西</p>
 <blockquote>
 <p>引用的引用</p>
 <blockquote>
@@ -209,8 +325,7 @@
 </blockquote>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;引用的效果就是这样</span><br><span class="line">&gt;左边出现这个东西</span><br><span class="line">&gt;&gt;引用的引用</span><br></pre></td></tr></table></figure>
-
-<p>​	引用用途举例：</p>
+<p>​    引用用途举例：</p>
 <blockquote>
 <p><strong>用户反馈</strong>  </p>
 <blockquote>
@@ -219,12 +334,10 @@
 </blockquote>
 <p><strong>开发团队回复</strong><br>该功能已排期，预计下版本发布。</p>
 </blockquote>
-<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>​	<a target="_blank" rel="noopener" href="https://zciszrry.github.io/">这是一个链接</a>	方括号+圆括号</p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>​    <a target="_blank" rel="noopener" href="https://zciszrry.github.io">这是一个链接</a>    方括号+圆括号</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[这是一个链接](https://zciszrry.github.io)</span><br></pre></td></tr></table></figure>
-
-<p>​	或者：<a target="_blank" rel="noopener" href="https://zciszrry.github.io/">https://zciszrry.github.io</a>	用了尖括号</p>
+<p>​    或者：<a target="_blank" rel="noopener" href="https://zciszrry.github.io">https://zciszrry.github.io</a>    用了尖括号</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">或者：&lt;https://zciszrry.github.io&gt;	</span><br></pre></td></tr></table></figure>
-
 <h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><ul>
 <li>无序列表可用* + - 带空格<ul>
 <li>使用Tab进行缩进</li>
@@ -238,55 +351,64 @@
 </li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* 无序列表</span><br><span class="line">* 无序列表</span><br><span class="line"></span><br><span class="line">1. 有序</span><br><span class="line">2. 有序</span><br></pre></td></tr></table></figure>
-
 <h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h3><hr>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">---或者*** </span><br><span class="line">(分割线上方最好空一行)</span><br></pre></td></tr></table></figure>
-
 <hr>
 <h3 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h3><p><del>删除的文字</del></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~~删除的文字~~</span><br></pre></td></tr></table></figure>
-
 <h3 id="下划线"><a href="#下划线" class="headerlink" title="下划线"></a>下划线</h3><p><u>下划线</u>  </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;u&gt;下划线&lt;/u&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>行内<code>代码块</code>用 单 &#96;</p>
+<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>行内<code>代码块</code>用 单 `</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">多行代码块用```</span><br></pre></td></tr></table></figure>
-
-<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><table>
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>表格</th>
 <th>是吗</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>用 | 来做表头</td>
-<td>用—分割表头和表项</td>
+<tbody>
+<tr>
+<td>用 \</td>
+<td>来做表头</td>
+<td>用—-分割表头和表项</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>（不过typora自动生成了）</p>
-<h3 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h3><p>试试脚注<a href="%E8%84%9A%E6%B3%A8%E5%86%85%E5%AE%B9">^1</a></p>
+<h3 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h3><p>试试脚注<sup><a href="#fn_1" id="reffn_1">1</a></sup></p>
+<blockquote id="fn_1">
+<sup>1</sup>. 脚注内容<a href="#reffn_1" title="Jump back to footnote [1] in the text."> ↩</a>
+</blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">试试脚注[^1]</span><br><span class="line">[^1]: 脚注内容</span><br></pre></td></tr></table></figure>
-
-<h3 id="待办事项-任务列表"><a href="#待办事项-任务列表" class="headerlink" title="待办事项&#x2F;任务列表"></a>待办事项&#x2F;任务列表</h3><p>待办事项：</p>
+<h3 id="待办事项-任务列表"><a href="#待办事项-任务列表" class="headerlink" title="待办事项/任务列表"></a>待办事项/任务列表</h3><p>待办事项：</p>
 <ul>
-<li><p><input checked="" disabled="" type="checkbox"> 
-犯困</p>
+<li><p>[x] 犯困</p>
 </li>
-<li><p><input disabled="" type="checkbox"> 
-学习markdown上班犯困</p>
+<li><p>[ ] 学习markdown上班犯困</p>
 </li>
-<li><p><input disabled="" type="checkbox"> 
-方括号后要加空格</p>
+<li><p>[ ] 方括号后要加空格</p>
 </li>
-<li><p><input checked="" disabled="" type="checkbox"> 
-不然和无序列表一样</p>
+<li><p>[x] 不然和无序列表一样</p>
 </li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">待办事项：</span><br><span class="line">- [x] 犯困</span><br><span class="line">- [ ] 学习markdown上班犯困</span><br></pre></td></tr></table></figure>
-
-<h3 id="公式块"><a href="#公式块" class="headerlink" title="公式块"></a>公式块</h3><p>$$<br>E&#x3D;mc^2		<br>$$</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">E=mc^2</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<h3 id="公式块"><a href="#公式块" class="headerlink" title="公式块"></a>公式块</h3><script type="math/tex; mode=display">
+E=mc^2</script><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">E=mc^2</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>💡 提示：让公式正确显示</strong></p>
+<ol>
+<li><p>公式块本身不属于<strong>markdown标准语法</strong>，上面的写法其实是<strong>LaTex</strong>数学模式的标准分隔符，且网页本身无法解析LaTex公式。</p>
+</li>
+<li><p>标准<strong>Markdown渲染器</strong>不认识公式块，会将其原封不动地转换为 HTML 中的普通文本。</p>
+</li>
+<li><p>若静态<strong>网页生成</strong>（如Hexo)和<strong>客户端</strong>浏览器都没有进行数学公式渲染，那么用户最终只能在网页上看到公式块源码。</p>
+</li>
+<li>Hexo（本文所用框架）默认的Markdown渲染器和LaTex语法有冲突，解决参考：<a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/third-party-services/math-equations.html">数学方程式 | 下一个</a>。</li>
+</ol>
+</blockquote>
 
     </div>
 
@@ -308,10 +430,7 @@
     <a href="/2025/08/05/hello-world/" rel="prev" title="Hello World">
       <i class="fa fa-chevron-left"></i> Hello World
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/08/22/test-md/" rel="next" title="test.md">
-      test.md <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -384,7 +503,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -473,6 +592,61 @@
 
 
   
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
