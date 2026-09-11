@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zciszrry.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":{"valine":{"order":-1}},"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="泛型是 Go 1.18 引入的核心特性，它允许在定义类型、函数和方法时使用类型形参，将具体类型延迟到实例化时确定。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go-泛型">
+<meta property="og:url" content="https://zciszrry.github.io/2026/08/17/Go-%E6%B3%9B%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Zrry|载入中……">
+<meta property="og:description" content="泛型是 Go 1.18 引入的核心特性，它允许在定义类型、函数和方法时使用类型形参，将具体类型延迟到实例化时确定。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zciszrry.github.io/2026/08/17/Go-%E6%B3%9B%E5%9E%8B/%E6%B3%9B%E5%9E%8B.png">
+<meta property="article:published_time" content="2026-08-17T09:30:56.000Z">
+<meta property="article:modified_time" content="2026-08-18T09:54:09.893Z">
+<meta property="article:author" content="Zrry">
+<meta property="article:tag" content="Go 杂技">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zciszrry.github.io/2026/08/17/Go-%E6%B3%9B%E5%9E%8B/%E6%B3%9B%E5%9E%8B.png">
+
+<link rel="canonical" href="https://zciszrry.github.io/2026/08/17/Go-%E6%B3%9B%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Go-泛型 | Zrry|载入中……</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Zrry|载入中……</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Zrry</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zciszrry.github.io/2026/08/17/Go-%E6%B3%9B%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zrry">
+      <meta itemprop="description" content="Zciszrry的个人博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zrry|载入中……">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go-泛型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-08-17 17:30:56" itemprop="dateCreated datePublished" datetime="2026-08-17T17:30:56+08:00">2026-08-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-08-18 17:54:09" itemprop="dateModified" datetime="2026-08-18T17:54:09+08:00">2026-08-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2026/08/17/Go-%E6%B3%9B%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2026/08/17/Go-%E6%B3%9B%E5%9E%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>泛型是 Go 1.18
+引入的核心特性，它允许在定义类型、函数和方法时使用<strong>类型形参</strong>，将具体类型延迟到实例化时确定。</p>
+<span id="more"></span>
+<p>泛型主要解决两个痛点：一是避免为每种类型重复编写相似逻辑；二是替代
+<code>interface&#123;&#125;</code>
+带来的类型不安全与运行时开销。使用泛型，你可以编写出<strong>类型安全、高度复用且零运行时损耗</strong>的代码——编译器会在编译期完成类型检查和实例化，既保证灵活性，又不牺牲性能。</p>
+<p>简单理解：泛型就是为代码预留一个“类型占位符”，定义时用 <code>T</code>
+代表未知类型，使用时再填入 <code>int</code>、<code>string</code>
+等具体类型实参。本文档将系统讲解 Go
+泛型的语法、约束、接口演变及版本差异。</p>
+<h2 id="泛型类型">1. 泛型类型</h2>
+<p>泛型允许在定义类型时使用<strong>类型形参（Type
+Parameter）</strong>，从而编写适用于多种具体类型的抽象代码。在 Go
+中，泛型通过方括号声明类型形参。</p>
+<p><strong>基本定义语法</strong>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Slice[T <span class="type">int</span> | <span class="type">float32</span> | <span class="type">float64</span>] []T</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MyChan[T <span class="type">int</span> | <span class="type">string</span>] <span class="keyword">chan</span> T</span><br></pre></td></tr></table></figure>
+<p>以上示例中，<code>T</code> 是类型形参，其约束为
+<code>int</code>、<code>float32</code>、<code>float64</code>
+的并集。实例化时必须传入具体的<strong>类型实参（Type
+Argument）</strong>。</p>
+<p><strong>实例化与使用</strong>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a Slice[<span class="type">int</span>] = []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;Type Name: %T&quot;</span>, a) <span class="comment">// 输出：Type Name: Slice[int]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b Slice[<span class="type">float32</span>] = []<span class="type">float32</span>&#123;<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;Type Name: %T&quot;</span>, b) <span class="comment">// 输出：Type Name: Slice[float32]</span></span><br></pre></td></tr></table></figure>
+<p>每个不同的类型实参都会生成独立的类型实例。</p>
+<hr />
+<h2 id="相关术语速览">2. 相关术语速览</h2>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 64%" />
+</colgroup>
+<thead>
+<tr>
+<th>术语</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类型形参（Type Parameter）</td>
+<td>泛型定义中占位的类型名称，如 <code>T</code></td>
+</tr>
+<tr>
+<td>类型实参（Type Argument）</td>
+<td>实例化时传入的具体类型，如 <code>int</code></td>
+</tr>
+<tr>
+<td>类型约束（Type Constraint）</td>
+<td>限定类型形参可接受的类型集合，如 <code>int \| float32</code></td>
+</tr>
+<tr>
+<td>泛型类型（Generic Type）</td>
+<td>带有类型形参的类型定义</td>
+</tr>
+<tr>
+<td>实例化（Instantiation）</td>
+<td>用类型实参替换形参，生成具体类型的过程</td>
+</tr>
+</tbody>
+</table>
+<p><img src="泛型.png" /></p>
+<hr />
+<h2 id="多类型形参与嵌套约束">3. 多类型形参与嵌套约束</h2>
+<p>类型定义可同时使用多个类型形参，且形参之间可以相互引用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> WowStruct[T <span class="type">int</span> | <span class="type">float32</span>, S []T] <span class="keyword">struct</span> &#123;</span><br><span class="line">    Data     S</span><br><span class="line">    MaxValue T</span><br><span class="line">    MinValue T</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里 <code>S</code> 的约束依赖于 <code>T</code>：<code>S</code>
+必须是 <code>T</code> 类型的切片。</p>
+<hr />
+<h2 id="泛型-receiver方法接收器">4. 泛型 Receiver（方法接收器）</h2>
+<p>泛型类型可以定义带类型形参的方法，即 <strong>泛型
+Receiver</strong>。在方法声明中，接收器部分需要保留类型形参。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MySlice[T <span class="type">int</span> | <span class="type">float32</span>] []T</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sum 方法计算切片元素之和</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s MySlice[T])</span></span> Sum() T &#123;</span><br><span class="line">    <span class="keyword">var</span> sum T</span><br><span class="line">    <span class="keyword">for</span> _, value := <span class="keyword">range</span> s &#123;</span><br><span class="line">        sum += value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用时，实例化后的类型自动拥有对应的方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s := MySlice[<span class="type">int</span>]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">total := s.Sum() <span class="comment">// total = 6</span></span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="泛型函数">5. 泛型函数</h2>
+<p>函数也可以拥有类型形参，称为<strong>泛型函数</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Add</span>[<span class="title">T</span> <span class="title">int</span> | <span class="title">float32</span> | <span class="title">float64</span>]<span class="params">(a T, b T)</span></span> T &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用时，Go
+编译器支持<strong>自动类型推导</strong>，通常无需显式指定类型实参：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result := Add(<span class="number">3</span>, <span class="number">5</span>)       <span class="comment">// 推导为 int</span></span><br><span class="line">result2 := Add(<span class="number">3.2</span>, <span class="number">4.5</span>) <span class="comment">// 推导为 float64</span></span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="泛型方法结构体方法">6. 泛型方法（结构体方法）</h2>
+<blockquote>
+<p><strong>重要版本说明</strong>：</p>
+<ul>
+<li>Go 1.27
+<strong>之前</strong>：不允许定义泛型方法，即方法不能独立拥有自己的类型形参。</li>
+<li>Go 1.27
+<strong>开始</strong>：<strong>支持</strong>为具体类型定义带有自身类型参数的方法，但此类泛型方法<strong>绝对不能用来实现任何接口</strong>。</li>
+</ul>
+</blockquote>
+<p><strong>错误示例（Go 1.27 后仍禁止用于接口实现）</strong>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Worker <span class="keyword">interface</span> &#123;</span><br><span class="line">    Do(<span class="type">string</span>) <span class="comment">// 接口方法签名固定</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MyWorker <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 编译错误：泛型方法无法实现接口方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w MyWorker)</span></span> Do[T any](s T) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>推荐替代方案</strong>：</p>
+<ol type="1">
+<li><strong>使用顶层泛型函数</strong>：将逻辑抽取为独立的泛型函数，把接收者作为普通参数传入。</li>
+<li><strong>将类型参数添加到接收器类型本身</strong>：将整个结构体定义为泛型，所有方法共享类型参数，从而安全地实现接口。</li>
+</ol>
+<p><strong>示例（方案2）</strong>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MyWorker[T any] <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法共享结构体的类型参数 T</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w MyWorker[T])</span></span> Do(s T) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="类型约束的复用与组合">7. 类型约束的复用与组合</h2>
+<h3 id="定义可复用的约束接口">7.1 定义可复用的约束接口</h3>
+<p>可以将类型约束抽取为独立的接口，方便复用和组合。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Int <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="type">int</span> | <span class="type">int8</span> | <span class="type">int16</span> | <span class="type">int32</span> | <span class="type">int64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Uint <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="type">uint</span> | <span class="type">uint8</span> | <span class="type">uint16</span> | <span class="type">uint32</span> | <span class="type">uint64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Float <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="type">float32</span> | <span class="type">float64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 组合多个约束</span></span><br><span class="line"><span class="keyword">type</span> Slice[T Int | Uint | Float] []T</span><br></pre></td></tr></table></figure>
+<h3 id="使用-指定底层类型">7.2 使用 <code>~</code> 指定底层类型</h3>
+<p><code>~</code> 符号表示匹配<strong>底层类型（Underlying
+Type）</strong>相同的所有类型，包括自定义类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Int <span class="keyword">interface</span> &#123;</span><br><span class="line">    ~<span class="type">int</span> | ~<span class="type">int8</span> | ~<span class="type">int16</span> | ~<span class="type">int32</span> | ~<span class="type">int64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MyInt <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> s Slice[MyInt] <span class="comment">// 正确，因为 MyInt 的底层类型是 int</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>限制</strong>：<code>~</code> 后面只能跟基本类型（如
+<code>int</code>、<code>float64</code>、<code>string</code>
+等），不能跟接口类型。</p>
+</blockquote>
+<hr />
+<h2 id="接口的新视角从方法集到类型集">8.
+接口的新视角：从方法集到类型集</h2>
+<p>Go 1.18 之后，接口的定义从“方法集”扩展为“<strong>类型集（Type
+Set）</strong>”。一个接口现在代表一个类型的集合，所有满足该集合条件的类型都实现了该接口。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</span><br><span class="line">    Read(p []<span class="type">byte</span>) (n <span class="type">int</span>, err <span class="type">error</span>)</span><br><span class="line">    Write(p []<span class="type">byte</span>) (n <span class="type">int</span>, err <span class="type">error</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此接口代表所有同时实现了 <code>Read</code> 和 <code>Write</code>
+方法的类型。</p>
+<h3 id="接口实现的新判定">接口实现的新判定</h3>
+<ul>
+<li>若 <code>T</code> 是非接口类型：当 <code>T</code> 属于接口
+<code>I</code> 的类型集时，称 <code>T</code> 实现了
+<code>I</code>。</li>
+<li>若 <code>T</code> 是接口类型：当 <code>T</code> 的类型集是
+<code>I</code> 类型集的子集时，称 <code>T</code> 实现了
+<code>I</code>。</li>
+</ul>
+<hr />
+<h2 id="类型的并集与交集">9. 类型的并集与交集</h2>
+<p>接口中多行类型定义或嵌入多个接口时，取它们之间的<strong>交集</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> AllInt <span class="keyword">interface</span> &#123;</span><br><span class="line">    ~<span class="type">int</span> | ~<span class="type">int8</span> | ~<span class="type">int16</span> | ~<span class="type">int32</span> | ~<span class="type">int64</span> | ~<span class="type">uint</span> | ~<span class="type">uint8</span> | ~<span class="type">uint16</span> | ~<span class="type">uint32</span> | ~<span class="type">uint64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Uint <span class="keyword">interface</span> &#123;</span><br><span class="line">    ~<span class="type">uint</span> | ~<span class="type">uint8</span> | ~<span class="type">uint16</span> | ~<span class="type">uint32</span> | ~<span class="type">uint64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A 的类型集 = AllInt ∩ Uint = 所有无符号整数类型</span></span><br><span class="line"><span class="keyword">type</span> A <span class="keyword">interface</span> &#123;</span><br><span class="line">    AllInt</span><br><span class="line">    Uint</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// B 的类型集 = AllInt ∩ ~int = 所有底层类型为 int 的类型（包括 int 和其别名）</span></span><br><span class="line"><span class="keyword">type</span> B <span class="keyword">interface</span> &#123;</span><br><span class="line">    AllInt</span><br><span class="line">    ~<span class="type">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="空类型集">空类型集</h3>
+<p>如果并集中的类型没有交集，则接口的类型集为空，这样的接口无法被任何类型实现。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Bad <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="type">int</span></span><br><span class="line">    <span class="type">float32</span></span><br><span class="line">&#125; <span class="comment">// 空集，因为 int 和 float32 没有交集</span></span><br></pre></td></tr></table></figure>
+<h3 id="空接口-interface-与-any">空接口 <code>interface&#123;&#125;</code> 与
+<code>any</code></h3>
+<p>空接口没有方法且没有类型限制，代表<strong>所有类型的集合</strong>。在类型约束中使用空接口，意味着约束接受所有类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> any = <span class="keyword">interface</span>&#123;&#125; <span class="comment">// Go 1.18 起，any 是 interface&#123;&#125; 的别名</span></span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="内置约束comparable-与-cmp.ordered">10.
+内置约束：<code>comparable</code> 与 <code>cmp.Ordered</code></h2>
+<h3 id="comparable">10.1 <code>comparable</code></h3>
+<p>Go 内置了 <code>comparable</code> 接口，代表所有可以使用
+<code>==</code> 和 <code>!=</code>
+进行比较的类型。<code>comparable</code>
+常用于泛型映射（map）的键类型约束。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误：map 的键必须可比较</span></span><br><span class="line"><span class="keyword">type</span> MyMap[KEY any, VALUE any] <span class="keyword">map</span>[KEY]VALUE</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确：使用 comparable 约束键类型</span></span><br><span class="line"><span class="keyword">type</span> MyMap[KEY comparable, VALUE any] <span class="keyword">map</span>[KEY]VALUE</span><br></pre></td></tr></table></figure>
+<h3 id="cmp.orderedgo-1.21-引入">10.2 <code>cmp.Ordered</code>（Go 1.21
+引入）</h3>
+<p>Go 标准库 <code>cmp</code> 包提供了 <code>Ordered</code>
+约束，代表所有支持
+<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>
+比较的类型（即有序类型）。这包括所有整数、浮点数和字符串类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;cmp&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Max</span>[<span class="title">T</span> <span class="title">cmp</span>.<span class="title">Ordered</span>]<span class="params">(a, b T)</span></span> T &#123;</span><br><span class="line">    <span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：<code>cmp.Ordered</code>
+不是内置关键字，而是标准库提供的类型约束，需要显式导入。</p>
+</blockquote>
+<hr />
+<h2 id="接口类型分类">11. 接口类型分类</h2>
+<p>根据是否包含类型约束，接口可分为两类：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>特征</th>
+<th>能否定义变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>基本接口</strong></td>
+<td>仅包含方法，不含类型元素</td>
+<td>✅ 可以</td>
+</tr>
+<tr>
+<td><strong>一般接口</strong></td>
+<td>包含类型元素（如 <code>~int</code>、<code>\|</code>）</td>
+<td>❌ 不可以</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例（一般接口）</strong>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</span><br><span class="line">    ~<span class="type">string</span> | ~[]<span class="type">rune</span>          <span class="comment">// 类型元素</span></span><br><span class="line">    Read(p []<span class="type">byte</span>) (n <span class="type">int</span>, err <span class="type">error</span>)</span><br><span class="line">    Write(p []<span class="type">byte</span>) (n <span class="type">int</span>, err <span class="type">error</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该接口代表所有以 <code>string</code> 或 <code>[]rune</code>
+为底层类型，且实现了 <code>Read</code> 和 <code>Write</code>
+方法的类型集合。但此类接口<strong>不能用于变量声明</strong>，只能用于类型约束。</p>
+<hr />
+<h2 id="泛型接口">12. 泛型接口</h2>
+<p>接口本身也可以带有类型形参，称为<strong>泛型接口</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> DataProcessor[T any] <span class="keyword">interface</span> &#123;</span><br><span class="line">    Process(oriData T) (newData T)</span><br><span class="line">    Save(data T) <span class="type">error</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>泛型接口必须实例化后才能使用，例如 <code>DataProcessor[string]</code>
+等价于：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> DataProcessor[<span class="type">string</span>] <span class="keyword">interface</span> &#123;</span><br><span class="line">    Process(oriData <span class="type">string</span>) (newData <span class="type">string</span>)</span><br><span class="line">    Save(data <span class="type">string</span>) <span class="type">error</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>泛型接口也可同时包含类型约束和方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> DataProcessor2[T any] <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="type">int</span> | ~<span class="keyword">struct</span>&#123; Data <span class="keyword">interface</span>&#123;&#125; &#125; <span class="comment">// 类型约束</span></span><br><span class="line">    Process(data T) (newData T)</span><br><span class="line">    Save(data T) <span class="type">error</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="使用注意事项与常见陷阱">13. 使用注意事项与常见陷阱</h2>
+<h3 id="基础类型不能仅含类型形参">13.1 基础类型不能仅含类型形参</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误：类型形参不能单独作为基础类型</span></span><br><span class="line"><span class="keyword">type</span> CommonType[T <span class="type">int</span> | <span class="type">string</span> | <span class="type">float32</span>] T</span><br></pre></td></tr></table></figure>
+<h3 id="指针类型约束的歧义处理">13.2 指针类型约束的歧义处理</h3>
+<p>某些写法会被编译器误认为表达式，需用 <code>interface&#123;&#125;</code>
+包裹或添加逗号消除歧义。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误：T *int 被误认为 T 乘以 int</span></span><br><span class="line"><span class="keyword">type</span> NewType[T *<span class="type">int</span>] []T</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确：用 interface&#123;&#125; 包裹</span></span><br><span class="line"><span class="keyword">type</span> NewType[T <span class="keyword">interface</span>&#123; *<span class="type">int</span> &#125;] []T</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或添加逗号（仅当约束为单一类型时）</span></span><br><span class="line"><span class="keyword">type</span> NewType2[T *<span class="type">int</span>,] []T</span><br></pre></td></tr></table></figure>
+<h3 id="匿名结构体与匿名函数不支持泛型">13.3
+匿名结构体与匿名函数不支持泛型</h3>
+<p>Go
+不允许匿名结构体或匿名函数单独拥有类型形参。<strong>匿名函数没有名字，而Go规定类型参数<code>[T any]</code>必须紧跟在函数或类型名后面，所以匿名函数根本“没地方写”类型参数，更无法被显式实例化</strong></p>
+<ol type="1">
+<li>用 <code>|</code> 连接的多个类型必须互不相交（接口类型除外）。</li>
+<li>类型的并集中不能包含类型形参。</li>
+<li>接口不能直接或间接包含自身。</li>
+<li>并集成员多于一个时，不能直接或间接并入
+<code>comparable</code>。</li>
+<li>带方法的接口（无论基本或一般）不能出现在并集中。</li>
+</ol>
+<h2 id="泛型底层实现">14. 泛型底层实现</h2>
+<h3 id="核心策略编译时按需生成-运行时字典辅助">核心策略：编译时按需生成
++ 运行时字典辅助</h3>
+<p>Go泛型采用<strong>混合策略</strong>，在编译时根据类型的内存布局决定是”生成专用代码”还是”共享代码+传递字典”。</p>
+<hr />
+<h3 id="整体流程">14.1 整体流程</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">编写代码 → 编译阶段 → 可执行文件 → 运行阶段</span><br><span class="line">          ↓</span><br><span class="line">   扫描所有泛型调用</span><br><span class="line">          ↓</span><br><span class="line">   判断类型&quot;形状&quot;(GC Shape)</span><br><span class="line">          ↓</span><br><span class="line">   ┌───────┴───────┐</span><br><span class="line">   ↓               ↓</span><br><span class="line">单态化生成      共享代码+</span><br><span class="line">专用代码        传递字典</span><br></pre></td></tr></table></figure>
+<hr />
+<h4 id="单态化monomorphization">14.2 单态化（Monomorphization）</h4>
+<p><strong>适用类型</strong>：值类型（<code>int</code>、<code>float64</code>、<code>struct</code>等），每种内存布局独立。</p>
+<p><strong>示例代码</strong>： <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Add</span>[<span class="title">T</span> <span class="title">any</span>]<span class="params">(a, b T)</span></span> T &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    Add[<span class="type">int</span>](<span class="number">1</span>, <span class="number">2</span>)        <span class="comment">// 触发：生成 func(int, int) int</span></span><br><span class="line">    Add[<span class="type">float64</span>](<span class="number">3.14</span>, <span class="number">2</span>) <span class="comment">// 触发：生成 func(float64, float64) float64</span></span><br><span class="line">    Add[<span class="type">string</span>](<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>) <span class="comment">// 触发：生成 func(string, string) string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>编译后内存布局</strong>： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">代码段:</span><br><span class="line">┌──────────────────────────┐</span><br><span class="line">│ Add_int 的机器码          │ ← 专门处理 int</span><br><span class="line">├──────────────────────────┤</span><br><span class="line">│ Add_float64 的机器码      │ ← 专门处理 float64</span><br><span class="line">├──────────────────────────┤</span><br><span class="line">│ Add_string 的机器码       │ ← 专门处理 string</span><br><span class="line">└──────────────────────────┘</span><br></pre></td></tr></table></figure></p>
+<p><strong>特点</strong>： - ✅ 运行时零额外开销 - ✅ 可充分内联优化 -
+❌ 代码体积增大（每类型一份）</p>
+<hr />
+<h3 id="共享代码-字典dictionary">14.3 共享代码 + 字典（Dictionary）</h3>
+<p><strong>适用类型</strong>：相同内存布局的类型（所有指针、所有接口等），共用一份代码。</p>
+<p><strong>示例代码</strong>： <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Add</span>[<span class="title">T</span> <span class="title">any</span>]<span class="params">(a, b T)</span></span> T &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> x, y *<span class="type">int</span></span><br><span class="line">    <span class="keyword">var</span> m, n *<span class="type">string</span></span><br><span class="line">    </span><br><span class="line">    Add[*<span class="type">int</span>](x, y)      <span class="comment">// 走共享代码 + 字典A</span></span><br><span class="line">    Add[*<span class="type">string</span>](m, n)   <span class="comment">// 走共享代码 + 字典B（不同字典！）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>编译后内存布局</strong>： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">代码段:</span><br><span class="line">┌──────────────────────────────┐</span><br><span class="line">│ Add_shared_ptr 的机器码       │ ← 所有指针类型共用一份！</span><br><span class="line">│ (通过字典获取类型信息)        │</span><br><span class="line">└──────────────────────────────┘</span><br><span class="line">         ↑              ↑</span><br><span class="line">         | 调用时传入    | 调用时传入</span><br><span class="line">    ┌────┴────┐    ┌────┴────┐</span><br><span class="line">数据段:        │         │</span><br><span class="line">    │ 字典A    │    │ 字典B    │</span><br><span class="line">    │ *int信息 │    │ *string信息│</span><br><span class="line">    │ 大小:8   │    │ 大小:8   │</span><br><span class="line">    │ 方法集.. │    │ 方法集.. │</span><br><span class="line">    └─────────┘    └─────────┘</span><br></pre></td></tr></table></figure></p>
+<p><strong>运行时调用示例（伪码）</strong>： <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 编译器生成的共享代码（概念示意）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Add_shared</span><span class="params">(a, b unsafe.Pointer, dict *Dictionary)</span></span> unsafe.Pointer &#123;</span><br><span class="line">    <span class="comment">// 从字典中读取类型信息</span></span><br><span class="line">    size := dict.Type.Size</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 分配内存</span></span><br><span class="line">    result := runtime.newobject(dict.Type)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行加法（根据字典中的类型信息进行不同操作）</span></span><br><span class="line">    <span class="keyword">switch</span> dict.Type.Kind &#123;</span><br><span class="line">    <span class="keyword">case</span> kindInt:</span><br><span class="line">        *(*(*<span class="type">int</span>)(result)) = *(*<span class="type">int</span>)(a) + *(*<span class="type">int</span>)(b)</span><br><span class="line">    <span class="keyword">case</span> kindString:</span><br><span class="line">        *(*(*<span class="type">string</span>)(result)) = *(*<span class="type">string</span>)(a) + *(*<span class="type">string</span>)(b)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>字典包含的信息</strong>： | 字段 | 说明 | 示例 | | ——– |
+—————- | ————————— | | <code>*_type</code> | 类型元数据 |
+大小、对齐、哈希、相等函数 | | <code>*itab</code> | 接口转换表 |
+用于类型断言和接口方法调用 | | 子字典 | 嵌套泛型调用所需 | 调用
+<code>Wrap[T]</code> 时传递的字典 | | 方法地址 | 泛型类型的方法集 |
+<code>String()</code>、<code>Compare()</code>等 |</p>
+<p><strong>特点</strong>： - ✅ 代码体积小（多类型共享） - ✅
+编译速度快（生成代码少） - ❌
+运行时极微小开销（多传一个参数、多几次解引用） - ❌
+无法内联优化（间接调用）</p>
+<hr />
+<h3 id="一句话总结">14.4 一句话总结</h3>
+<blockquote>
+<p><strong>Go泛型 = 编译时按需生成专用代码（值类型） +
+编译时生成共享代码+运行时传入字典（指针等相同形状类型），字典只用于补充共享代码缺失的类型信息，而非用于”查找”代码副本。</strong></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go-%E6%9D%82%E6%8A%80/" rel="tag"># Go 杂技</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/08/05/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%88%9D%E6%AD%A5/" rel="prev" title="正则表达式初步">
+      <i class="fa fa-chevron-left"></i> 正则表达式初步
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/09/11/%E5%B0%91%E4%BA%8E%E5%8D%8A%E6%95%B0%E7%9A%84%E5%9D%8F%E7%94%B5%E8%84%91%E9%97%AE%E9%A2%98/" rel="next" title="少于半数的坏电脑问题">
+      少于半数的坏电脑问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">1. 泛型类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD%E9%80%9F%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">2. 相关术语速览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%B1%BB%E5%9E%8B%E5%BD%A2%E5%8F%82%E4%B8%8E%E5%B5%8C%E5%A5%97%E7%BA%A6%E6%9D%9F"><span class="nav-number">3.</span> <span class="nav-text">3. 多类型形参与嵌套约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B-receiver%E6%96%B9%E6%B3%95%E6%8E%A5%E6%94%B6%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">4. 泛型 Receiver（方法接收器）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">5. 泛型函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E6%96%B9%E6%B3%95%E7%BB%93%E6%9E%84%E4%BD%93%E6%96%B9%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">6. 泛型方法（结构体方法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F%E7%9A%84%E5%A4%8D%E7%94%A8%E4%B8%8E%E7%BB%84%E5%90%88"><span class="nav-number">7.</span> <span class="nav-text">7. 类型约束的复用与组合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%8F%AF%E5%A4%8D%E7%94%A8%E7%9A%84%E7%BA%A6%E6%9D%9F%E6%8E%A5%E5%8F%A3"><span class="nav-number">7.1.</span> <span class="nav-text">7.1 定义可复用的约束接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-%E6%8C%87%E5%AE%9A%E5%BA%95%E5%B1%82%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.2.</span> <span class="nav-text">7.2 使用 ~ 指定底层类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%96%B0%E8%A7%86%E8%A7%92%E4%BB%8E%E6%96%B9%E6%B3%95%E9%9B%86%E5%88%B0%E7%B1%BB%E5%9E%8B%E9%9B%86"><span class="nav-number">8.</span> <span class="nav-text">8.
+接口的新视角：从方法集到类型集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%96%B0%E5%88%A4%E5%AE%9A"><span class="nav-number">8.1.</span> <span class="nav-text">接口实现的新判定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B9%B6%E9%9B%86%E4%B8%8E%E4%BA%A4%E9%9B%86"><span class="nav-number">9.</span> <span class="nav-text">9. 类型的并集与交集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E7%B1%BB%E5%9E%8B%E9%9B%86"><span class="nav-number">9.1.</span> <span class="nav-text">空类型集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E6%8E%A5%E5%8F%A3-interface-%E4%B8%8E-any"><span class="nav-number">9.2.</span> <span class="nav-text">空接口 interface{} 与
+any</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E7%BA%A6%E6%9D%9Fcomparable-%E4%B8%8E-cmp.ordered"><span class="nav-number">10.</span> <span class="nav-text">10.
+内置约束：comparable 与 cmp.Ordered</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#comparable"><span class="nav-number">10.1.</span> <span class="nav-text">10.1 comparable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cmp.orderedgo-1.21-%E5%BC%95%E5%85%A5"><span class="nav-number">10.2.</span> <span class="nav-text">10.2 cmp.Ordered（Go 1.21
+引入）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="nav-number">11.</span> <span class="nav-text">11. 接口类型分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">12.</span> <span class="nav-text">12. 泛型接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E4%B8%8E%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1"><span class="nav-number">13.</span> <span class="nav-text">13. 使用注意事项与常见陷阱</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B%E4%B8%8D%E8%83%BD%E4%BB%85%E5%90%AB%E7%B1%BB%E5%9E%8B%E5%BD%A2%E5%8F%82"><span class="nav-number">13.1.</span> <span class="nav-text">13.1 基础类型不能仅含类型形参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F%E7%9A%84%E6%AD%A7%E4%B9%89%E5%A4%84%E7%90%86"><span class="nav-number">13.2.</span> <span class="nav-text">13.2 指针类型约束的歧义处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BF%E5%90%8D%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E4%B8%8D%E6%94%AF%E6%8C%81%E6%B3%9B%E5%9E%8B"><span class="nav-number">13.3.</span> <span class="nav-text">13.3
+匿名结构体与匿名函数不支持泛型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="nav-number">14.</span> <span class="nav-text">14. 泛型底层实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%AD%96%E7%95%A5%E7%BC%96%E8%AF%91%E6%97%B6%E6%8C%89%E9%9C%80%E7%94%9F%E6%88%90-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%AD%97%E5%85%B8%E8%BE%85%E5%8A%A9"><span class="nav-number">14.1.</span> <span class="nav-text">核心策略：编译时按需生成
++ 运行时字典辅助</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="nav-number">14.2.</span> <span class="nav-text">14.1 整体流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E6%80%81%E5%8C%96monomorphization"><span class="nav-number">14.2.1.</span> <span class="nav-text">14.2 单态化（Monomorphization）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E4%BB%A3%E7%A0%81-%E5%AD%97%E5%85%B8dictionary"><span class="nav-number">14.3.</span> <span class="nav-text">14.3 共享代码 + 字典（Dictionary）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%80%BB%E7%BB%93"><span class="nav-number">14.4.</span> <span class="nav-text">14.4 一句话总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zrry</p>
+  <div class="site-description" itemprop="description">Zciszrry的个人博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zrry</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'RlvU55iuk84KznXJtlwiMTCK-gzGzoHsz',
+      appKey     : 'mTjejcuU9LXxv1dsMTTweuiA',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
