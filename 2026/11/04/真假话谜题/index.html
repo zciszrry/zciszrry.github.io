@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zciszrry.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":{"valine":{"order":-1}},"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 经典问题 有两个人，一个永远说真话，一个永远说假话。你面前有两扇门，一扇通向生路，一扇通向死路。两人都知道门的情况，但你不知道谁真谁假。你只能问其中一个人一个问题，怎么问才能找到生路？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="真假话谜题">
+<meta property="og:url" content="https://zciszrry.github.io/2026/11/04/%E7%9C%9F%E5%81%87%E8%AF%9D%E8%B0%9C%E9%A2%98/index.html">
+<meta property="og:site_name" content="Zrry|载入中……">
+<meta property="og:description" content="1. 经典问题 有两个人，一个永远说真话，一个永远说假话。你面前有两扇门，一扇通向生路，一扇通向死路。两人都知道门的情况，但你不知道谁真谁假。你只能问其中一个人一个问题，怎么问才能找到生路？">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-04T08:52:47.000Z">
+<meta property="article:modified_time" content="2026-11-04T08:57:26.329Z">
+<meta property="article:author" content="Zrry">
+<meta property="article:tag" content="谜题">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zciszrry.github.io/2026/11/04/%E7%9C%9F%E5%81%87%E8%AF%9D%E8%B0%9C%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>真假话谜题 | Zrry|载入中……</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Zrry|载入中……</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Zrry</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zciszrry.github.io/2026/11/04/%E7%9C%9F%E5%81%87%E8%AF%9D%E8%B0%9C%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zrry">
+      <meta itemprop="description" content="Zciszrry的个人博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zrry|载入中……">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          真假话谜题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-11-04 16:52:47 / 修改时间：16:57:26" itemprop="dateCreated datePublished" datetime="2026-11-04T16:52:47+08:00">2026-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%B0%9C%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">谜题</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2026/11/04/%E7%9C%9F%E5%81%87%E8%AF%9D%E8%B0%9C%E9%A2%98/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2026/11/04/%E7%9C%9F%E5%81%87%E8%AF%9D%E8%B0%9C%E9%A2%98/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="经典问题">1. 经典问题</h2>
+<p>有两个人，一个永远说真话，一个永远说假话。你面前有两扇门，一扇通向生路，一扇通向死路。两人都知道门的情况，但你不知道谁真谁假。你只能问其中一个人一个问题，怎么问才能找到生路？</p>
+<span id="more"></span>
+<p>标准答案是：</p>
+<blockquote>
+<p>随便指一扇门，问其中一个人：“如果我问另一个人‘这扇门通向生路吗’，他会回答‘是’吗？”</p>
+</blockquote>
+<p>无论被问的人是真话者还是假话者，答案都会与真实情况相反。于是按相反方向选择即可。</p>
+<hr />
+<h2 id="问题的一般形式">2. 问题的一般形式</h2>
+<p>把问题抽象一下：</p>
+<ul>
+<li>有两个人 (A)、(B)，一个真话者，一个假话者；</li>
+<li>你不知道谁真谁假；</li>
+<li>你只能问其中一个人一个问题；</li>
+<li>你真正想知道的，是某个是非题 (K) 的真实答案。</li>
+</ul>
+<p>核心困难在于：你不知道回答者会不会翻转答案。</p>
+<p>解决思路也很简单：<strong>构造一个问题，让真话者和假话者给出相同回答。</strong></p>
+<hr />
+<h2 id="两种经典问法">3. 两种经典问法</h2>
+<h3 id="嵌套问法">3.1 嵌套问法</h3>
+<p>向 (A) 提问：</p>
+<blockquote>
+<p>如果我问 (B) 题 (K)，(B) 会回答“是”吗？</p>
+</blockquote>
+<p>设 (A) 的回答为 (X)。</p>
+<ul>
+<li>若 (A) 真、(B) 假：(B) 会翻转 (K)，(A)
+如实报告，所以整体翻转一次；</li>
+<li>若 (A) 假、(B) 真：(B) 不翻转，(A) 再翻转，所以整体也翻转一次。</li>
+</ul>
+<p>因此，无论 (A) 真假，答案都被翻转奇数次。</p>
+<blockquote>
+<p><strong>(X) 与 (K) 的真实答案相反。</strong></p>
+</blockquote>
+<h3 id="自指问法">3.2 自指问法</h3>
+<p>向 (A) 提问：</p>
+<blockquote>
+<p>如果我问你题 (K)，你会回答“是”吗？</p>
+</blockquote>
+<p>设 (A) 的回答为 (Y)。</p>
+<ul>
+<li>若 (A) 真：内层如实回答，外层也如实回答，不翻转；</li>
+<li>若 (A) 假：内层翻转一次，外层再翻转一次，负负得正。</li>
+</ul>
+<p>因此，无论 (A) 真假，答案都被翻转偶数次。</p>
+<blockquote>
+<p><strong>(Y) 与 (K) 的真实答案一致。</strong></p>
+</blockquote>
+<hr />
+<h2 id="两种问法的对比">4. 两种问法的对比</h2>
+<table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 37%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr>
+<th>问法</th>
+<th>变换次数</th>
+<th>回答与真实答案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>嵌套：问 (A)，(B) 会怎么回答</td>
+<td>经过一真一假，奇数次翻转</td>
+<td>相反</td>
+</tr>
+<tr>
+<td>自指：问 (A)，你会怎么回答</td>
+<td>经过同一个人两次，偶数次翻转</td>
+<td>一致</td>
+</tr>
+</tbody>
+</table>
+<p>两者本质相同：都是让真话者和假话者最终给出同一个回答。</p>
+<hr />
+<h2 id="加入随机者">5. 加入随机者</h2>
+<p>现在考虑更复杂的情况：</p>
+<blockquote>
+<p>有真话者、假话者、随机者三个人。真话者永远说真话，假话者永远说假话，随机者每次随机决定说真话还是说假话。你只能问两个问题，想得到
+(K) 的答案。</p>
+</blockquote>
+<p>关键观察：</p>
+<p><del>随机者虽然随机，但<strong>对当前这一个问题</strong>，他要么说真话，要么说假话，规则是确定的。因此自指问法仍然有效：</del></p>
+<p>因为随机者随机说真假话，故而自指问法对随机者失效。（否则引入随机者也毫无意义）</p>
+<p>此时只需要找出一个确定的非随机者，对非随机者进行自指提问，即可得到最终是非结果。</p>
+<hr />
+<h2 id="策略">6. 策略</h2>
+<p>设三人为 (A)、(B)、(C)。</p>
+<h3 id="第一问找出非随机者">第一问：找出非随机者</h3>
+<p>向 (A) 提问：</p>
+<blockquote>
+<p>如果我问你：“(B) 是随机者吗？”，你会回答“是”吗？</p>
+</blockquote>
+<p>若 A 回答是，则 C 必定是非随机者，令N =
+C。(为什么？因为A如果是非随机者，此问能确认B是随机者，则C是非随机者；如果A是随机者，则C是非随机者。)</p>
+<p>若A回答不是，则B必定是非随机者，令N =
+C。(为什么？因为A如果是非随机者，此问能确认B非随机；如果A是随机，则B非随机。)</p>
+<h3 id="第二问问出-k">第二问：问出 (K)</h3>
+<p>向 (N) 提问：</p>
+<blockquote>
+<p>如果我问你题 (K)，你会回答“是”吗？</p>
+</blockquote>
+<p>因为 (N) 非随机，自指问法生效：</p>
+<ul>
+<li>若回答“是”，则 (K) 为真；</li>
+<li>若回答“不是”，则 (K) 为假。</li>
+</ul>
+<hr />
+<h2 id="总结">7. 总结</h2>
+<p>真假话谜题的核心不是“猜谁真谁假”，而是<strong>构造问题，让真话者和假话者给出相同回答</strong>。</p>
+<ul>
+<li>嵌套问法：让答案经过一真一假，翻转奇数次，回答与真实相反；</li>
+<li>自指问法：让答案经过同一人两次，翻转偶数次，回答与真实一致。</li>
+</ul>
+<p>加入随机者后，可以用第一问锁定非随机者，第二问得到 (K)。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%B0%9C%E9%A2%98/" rel="tag"># 谜题</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/09/11/%E5%B0%91%E4%BA%8E%E5%8D%8A%E6%95%B0%E7%9A%84%E5%9D%8F%E7%94%B5%E8%84%91%E9%97%AE%E9%A2%98/" rel="prev" title="少于半数的坏电脑问题">
+      <i class="fa fa-chevron-left"></i> 少于半数的坏电脑问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">1. 经典问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E7%9A%84%E4%B8%80%E8%88%AC%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">2. 问题的一般形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E7%BB%8F%E5%85%B8%E9%97%AE%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">3. 两种经典问法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E9%97%AE%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 嵌套问法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E6%8C%87%E9%97%AE%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 自指问法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%97%AE%E6%B3%95%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">4.</span> <span class="nav-text">4. 两种问法的对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5%E9%9A%8F%E6%9C%BA%E8%80%85"><span class="nav-number">5.</span> <span class="nav-text">5. 加入随机者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%96%E7%95%A5"><span class="nav-number">6.</span> <span class="nav-text">6. 策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%97%AE%E6%89%BE%E5%87%BA%E9%9D%9E%E9%9A%8F%E6%9C%BA%E8%80%85"><span class="nav-number">6.1.</span> <span class="nav-text">第一问：找出非随机者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%97%AE%E9%97%AE%E5%87%BA-k"><span class="nav-number">6.2.</span> <span class="nav-text">第二问：问出 (K)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">7. 总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zrry</p>
+  <div class="site-description" itemprop="description">Zciszrry的个人博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zrry</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'RlvU55iuk84KznXJtlwiMTCK-gzGzoHsz',
+      appKey     : 'mTjejcuU9LXxv1dsMTTweuiA',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
